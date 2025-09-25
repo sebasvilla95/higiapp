@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     #apps project
     'users_module',
+    'admin_module',
 ]
 
 MIDDLEWARE = [
