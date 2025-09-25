@@ -1,7 +1,7 @@
 from datetime import datetime
 
 class AutoFill:
-    """ This class defines the fields for updating and creating records by capturing the user and timestamp. """
+    """ Esta clase define los campos para actualizar y crear registros capturando el usuario y la fecha. """
 
     def __init__(self, request, data):
         self.request = request 

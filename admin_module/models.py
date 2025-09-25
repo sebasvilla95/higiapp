@@ -1,6 +1,16 @@
 from django.db import models
 from users_module.models import Users
 
+STATUS_CHOICES = (
+    (1, 'Activo'),
+    (0, 'Inactivo'),
+)
+
+TAXES_CHOICES = (
+    (1, 'Con IVA'),
+    (0, 'Sin IVA'),
+)
+
 class Clients(models.Model):
     id = models.AutoField(primary_key=True)
     identification = models.CharField(max_length=100)
@@ -8,7 +18,7 @@ class Clients(models.Model):
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     email = models.EmailField()
-    status = models.BooleanField(default=True)
+    status = models.BooleanField(default=1, choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='clients_created_by')
@@ -29,7 +39,9 @@ class Products(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    status = models.BooleanField(default=True)
+    taxes = models.BooleanField(default=0, choices=TAXES_CHOICES)
+    value_taxes = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.BooleanField(default=1, choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='products_created_by')

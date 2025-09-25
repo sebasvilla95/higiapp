@@ -17,6 +17,7 @@ from users_module.permissions import IsSuperUser
 from backend_higiapp.services import pagination
 
 from users_module.v1.serializers.crud_serializers import UsersSerializer, CustomTokenObtainPairSerializer, ProfileSerializer, UserLiteSerializer, PasswordChangeSerializer
+from users_module.v1.serializers.read_serializers import UsersReadSerializer
 
 from users_module.models import Users
 
@@ -71,18 +72,7 @@ class UserViewList(mixins.ListModelMixin,mixins.CreateModelMixin,generics.Generi
     def post(self, request, *args, **kwargs):
         
         return self.create(request, *args, **kwargs)
-            
-class UserViewListPagination(ListAPIView):
-    queryset = Users.objects.all()
-    serializer_class = UsersSerializer
-    pagination_class = pagination.StandardResultsSetPagination
-    permission_classes = [IsAuthenticated, IsSuperUser]
-    
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['id']
-    search_fields = ['first_name', 'last_name', 'email']
-    ordering = ['first_name']
-            
+                    
 class UserViewDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
@@ -139,3 +129,17 @@ class PasswordChangeView(generics.GenericAPIView):
             user.save()
             return Response({"message": "Password changed successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#====================================================
+#Vistas de usuarios paginados
+#====================================================
+class UserViewListPagination(ListAPIView):
+    queryset = Users.objects.all()
+    serializer_class = UsersReadSerializer
+    pagination_class = pagination.StandardResultsSetPagination
+    permission_classes = [IsAuthenticated, IsSuperUser]
+    
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['id', 'status', 'is_superuser']
+    search_fields = ['first_name', 'last_name', 'email']
+    ordering = ['first_name']
