@@ -30,15 +30,14 @@ class Process(models.Model):
         managed = True
         verbose_name = 'Proceso de Cotización'
         verbose_name_plural = 'Procesos de Cotizaciones'
-        ordering = ['-updated_at']
 
 class Quotes(models.Model):
     id = models.AutoField(primary_key=True)
     process = models.ForeignKey(Process, on_delete=models.CASCADE, related_name='quotes_process')
     client = models.ForeignKey(Clients, on_delete=models.CASCADE, related_name='quotes_client')
     date_quote = models.DateField()
-    consecutive_number = models.IntegerField(min_value=1)
-    consecutive = models.CharField(max_length=10, unique=True)    
+    consecutive_number = models.IntegerField(blank=True, null=True)
+    consecutive = models.CharField(max_length=10, unique=True, blank=True, null=True)    
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_iva = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -64,14 +63,13 @@ class Quotes(models.Model):
         managed = True
         verbose_name = 'Cotización'
         verbose_name_plural = 'Cotizaciones'
-        ordering = ['-updated_at']
 
 class ItemsQuote(models.Model):
     id = models.AutoField(primary_key=True)
     quote = models.ForeignKey(Quotes, on_delete=models.CASCADE, related_name='items_quote')
     process = models.ForeignKey(Process, on_delete=models.CASCADE, related_name='items_quote_process')
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='items_quote_product')
-    quantity = models.IntegerField(min_value=1)
+    quantity = models.IntegerField()
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_iva = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -93,4 +91,3 @@ class ItemsQuote(models.Model):
         managed = True
         verbose_name = 'Item de Cotización'
         verbose_name_plural = 'Items de Cotizaciones'
-        ordering = ['-updated_at']
