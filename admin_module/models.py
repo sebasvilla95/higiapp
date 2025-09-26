@@ -11,6 +11,12 @@ TAXES_CHOICES = (
     (0, 'Sin IVA'),
 )
 
+STOCK_CHOICES = [
+    (1, 'Ingreso'),
+    (2, 'Salida'),
+    (3, 'Transferencia'),
+]
+
 class Clients(models.Model):
     id = models.AutoField(primary_key=True)
     identification = models.CharField(max_length=100)
@@ -55,3 +61,22 @@ class Products(models.Model):
         managed = True
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
+
+class ManageStock(models.Model):
+    id = models.AutoField(primary_key=True)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='manage_stock_product')
+    quantity = models.IntegerField(default=0)
+    status = models.IntegerField(default=1, choices=STOCK_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='manage_stock_created_by')
+    updated_by = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='manage_stock_updated_by')
+
+    def __str__(self):
+        return self.product.code
+
+    class Meta:
+        db_table = 'admin_manage_stock'
+        managed = True
+        verbose_name = 'Gestión de Stock'
+        verbose_name_plural = 'Gestión de Stock'

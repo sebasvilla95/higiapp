@@ -1,6 +1,6 @@
 from admin_module.models import Clients
-from admin_module.v1.serializers.crud_serializers import ClientsSerializer, ProductsSerializer
-from admin_module.models import Products
+from admin_module.v1.serializers.crud_serializers import ClientsSerializer, ProductsSerializer, ManageStockSerializer
+from admin_module.models import Products, ManageStock
 from backend_higiapp.utils.base_classes import BaseAutoFillViewSet
 
 class ClientsViewSet(BaseAutoFillViewSet):
@@ -10,4 +10,7 @@ class ClientsViewSet(BaseAutoFillViewSet):
 class ProductsViewSet(BaseAutoFillViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
-    
+
+class ManageStockViewSet(BaseAutoFillViewSet):
+    queryset = ManageStock.objects.all()
+    serializer_class = ManageStockSerializer

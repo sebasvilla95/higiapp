@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from admin_module.models import Clients, Products
+from admin_module.models import Clients, Products, ManageStock
 
 class ClientsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,4 +9,9 @@ class ClientsSerializer(serializers.ModelSerializer):
 class ProductsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
+        fields = '__all__'
+
+class ManageStockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ManageStock
         fields = '__all__'
